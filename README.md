@@ -1,24 +1,70 @@
-# README
+# Book Library Application
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A Ruby on Rails application for managing a book lending library. Users can browse books, borrow them, and return them.
 
-Things you may want to cover:
+## Features
 
-* Ruby version
+- User registration and authentication
+- Browse available books
+- Borrow and return books
+- View currently borrowed books
+- Due date tracking (2 weeks from borrowing date)
+- ISBN validation
+- Comprehensive test coverage
 
-* System dependencies
+## Requirements
 
-* Configuration
+- Ruby 3.2.2
+- Rails 7.1.0
+- PostgreSQL
 
-* Database creation
+## Setup
 
-* Database initialization
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/book_library.git
+cd book_library
+```
 
-* How to run the test suite
+2. Install dependencies:
+```bash
+bundle install
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+3. Setup database:
+```bash
+rails db:create
+rails db:migrate
+```
 
-* Deployment instructions
+4. (Optional) Load sample data:
+```bash
+rails db:seed
+```
 
-* ...
+5. Start the server:
+```bash
+rails server
+```
+
+Visit `http://localhost:3000` in your browser.
+
+## Running Tests
+
+The application uses RSpec for testing. To run the test suite:
+
+```bash
+bundle exec rspec
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE.md file for details.
