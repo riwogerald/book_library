@@ -1,9 +1,41 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# Add seed data
+# db/seeds.rb
+puts "Creating sample data..."
+
+# Create users
+user1 = User.create!(
+  email: 'john@example.com',
+  password: 'password123',
+  name: 'John Doe'
+)
+
+user2 = User.create!(
+  email: 'jane@example.com',
+  password: 'password123',
+  name: 'Jane Smith'
+)
+
+# Create books
+books = [
+  {
+    title: '1984',
+    author: 'George Orwell',
+    isbn: '9780451524935',
+    description: 'A dystopian social science fiction novel.',
+    category: 'Fiction'
+  },
+  {
+    title: 'The Hobbit',
+    author: 'J.R.R. Tolkien',
+    isbn: '9780547928227',
+    description: 'A fantasy novel about the adventures of Bilbo Baggins.',
+    category: 'Fantasy'
+  }
+  # Add more books as needed
+]
+
+books.each do |book_data|
+  Book.create!(book_data)
+end
+
+puts "Sample data created successfully!"

@@ -7,6 +7,8 @@ class CreateBorrowings < ActiveRecord::Migration[8.0]
       t.datetime :returned_at
 
       t.timestamps
+
+      t.index [ :book_id, :returned_at ]
     end
   end
 end
