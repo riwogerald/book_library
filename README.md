@@ -57,6 +57,10 @@ The application uses RSpec for testing. To run the test suite:
 bundle exec rspec
 ```
 
+## Testing Update
+
+During initial database setup, executing rails db:create led to several severe IDE crashes, including one instance of a Blue Screen of Death. Despite these technical challenges, testing will continue, and this README will be updated accordingly to document any persistent issues or workarounds discovered. The development environment stability is currently being investigated.
+
 ## Contributing
 
 1. Fork the repository
