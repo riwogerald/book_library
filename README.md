@@ -20,29 +20,34 @@ A Ruby on Rails application for managing a book lending library. Users can brows
 
 ## Setup
 
-1. Clone the repository:
+### Clone the repository
+
 ```bash
 git clone https://github.com/yourusername/book_library.git
 cd book_library
 ```
 
-2. Install dependencies:
+### Install dependencies
+
 ```bash
 bundle install
 ```
 
-3. Setup database:
+### Setup database
+
 ```bash
 rails db:create
 rails db:migrate
 ```
 
-4. (Optional) Load sample data:
+### (Optional) Load sample data
+
 ```bash
 rails db:seed
 ```
 
-5. Start the server:
+### Start the server
+
 ```bash
 rails server
 ```
