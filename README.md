@@ -1,79 +1,289 @@
-# Book Library Application
+# Book Library Management System
 
-A Ruby on Rails application for managing a book lending library. Users can browse books, borrow them, and return them.
+A modern Ruby on Rails web application for managing a digital book lending library. This system allows users to browse available books, borrow them with automatic due date tracking, and manage their reading history through an intuitive web interface.
 
-## Features
+## 🚀 Features
 
-- User registration and authentication
-- Browse available books
-- Borrow and return books
-- View currently borrowed books
-- Due date tracking (2 weeks from borrowing date)
-- ISBN validation
-- Comprehensive test coverage
+### User Management
+- **User Registration & Authentication**: Secure email/password authentication system
+- **User Profiles**: Personal dashboard showing borrowed books and reading history
+- **Session Management**: Secure login/logout functionality
 
-## Requirements
+### Book Management
+- **Book Catalog**: Browse comprehensive book listings with detailed information
+- **Book Details**: View title, author, ISBN, description, and category
+- **Availability Tracking**: Real-time status showing available vs. borrowed books
+- **ISBN Validation**: Automatic validation of ISBN-10 and ISBN-13 formats
 
-- Ruby 3.2.2
-- Rails 7.1.0
-- PostgreSQL
+### Borrowing System
+- **One-Click Borrowing**: Simple borrowing process for available books
+- **Automatic Due Dates**: 2-week lending period with automatic calculation
+- **Return Management**: Easy book return process
+- **Overdue Tracking**: Visual indicators for overdue books
+- **Borrowing History**: Complete record of user's borrowing activity
 
-## Setup
+### User Interface
+- **Responsive Design**: Mobile-friendly interface using Tailwind CSS
+- **Modern Styling**: Clean, professional design with intuitive navigation
+- **Real-time Updates**: Dynamic status updates and notifications
+- **Accessibility**: WCAG-compliant design patterns
 
-### Clone the repository
+## 🛠 Technology Stack
+
+- **Backend**: Ruby 3.4.1, Rails 8.0.1
+- **Database**: PostgreSQL with Active Record ORM
+- **Frontend**: HTML5, Tailwind CSS, Stimulus.js, Turbo
+- **Authentication**: BCrypt for secure password hashing
+- **Testing**: RSpec with FactoryBot, Capybara for system tests
+- **Development**: Hot reloading, comprehensive test coverage
+- **Deployment**: Docker-ready with Kamal deployment configuration
+
+## 📋 Prerequisites
+
+- Ruby 3.4.1
+- Rails 8.0.1
+- PostgreSQL 12+
+- Node.js (for asset compilation)
+- Git
+
+## 🚀 Quick Start
+
+### 1. Clone and Setup
 
 ```bash
+# Clone the repository
 git clone https://github.com/yourusername/book_library.git
 cd book_library
-```
 
-### Install dependencies
-
-```bash
+# Install dependencies
 bundle install
-```
 
-### Setup database
-
-```bash
+# Setup database
 rails db:create
 rails db:migrate
-```
 
-### (Optional) Load sample data
-
-```bash
+# Load sample data (optional)
 rails db:seed
 ```
 
-### Start the server
+### 2. Development Server
 
 ```bash
+# Start the development server with hot reloading
+bin/dev
+
+# Or start Rails server only
 rails server
 ```
 
-Visit `http://localhost:3000` in your browser.
+Visit `http://localhost:3000` to access the application.
 
-## Running Tests
+### 3. Sample Data
 
-The application uses RSpec for testing. To run the test suite:
+The seed file creates:
+- 2 sample users (john@example.com, jane@example.com)
+- 4 sample books across different genres
+- Password for all sample users: `password123`
+
+## 🧪 Testing
+
+### Run the Complete Test Suite
 
 ```bash
+# Run all tests
 bundle exec rspec
+
+# Run with coverage
+bundle exec rspec --format documentation
+
+# Run specific test types
+bundle exec rspec spec/models/
+bundle exec rspec spec/controllers/
+bundle exec rspec spec/system/
 ```
 
-## Testing Update
+### Test Coverage
 
-During initial database setup, executing rails db:create led to several severe IDE crashes, including one instance of a Blue Screen of Death. Despite these technical challenges, testing will continue, and this README will be updated accordingly to document any persistent issues or workarounds discovered. The development environment stability is currently being investigated.
+The application includes comprehensive test coverage:
+- **Model Tests**: Validations, associations, business logic
+- **Controller Tests**: Authentication, authorization, CRUD operations
+- **System Tests**: End-to-end user workflows
+- **View Tests**: Template rendering and content verification
 
-## Contributing
+## 🚀 Deployment
+
+### Production Deployment with Kamal
+
+This application is configured for deployment using Kamal (Rails' official deployment tool):
+
+```bash
+# Setup deployment configuration
+cp config/deploy.yml.example config/deploy.yml
+# Edit config/deploy.yml with your server details
+
+# Setup secrets
+cp .kamal/secrets.example .kamal/secrets
+# Add your production secrets
+
+# Deploy to production
+kamal deploy
+```
+
+### Docker Deployment
+
+```bash
+# Build the Docker image
+docker build -t book_library .
+
+# Run with environment variables
+docker run -d \
+  -p 80:80 \
+  -e RAILS_MASTER_KEY=your_master_key \
+  -e DATABASE_URL=your_database_url \
+  --name book_library \
+  book_library
+```
+
+### Environment Variables
+
+Required for production:
+- `RAILS_MASTER_KEY`: Rails credentials master key
+- `DATABASE_URL`: PostgreSQL connection string
+- `RAILS_ENV=production`
+
+Optional:
+- `WEB_CONCURRENCY`: Number of Puma workers
+- `RAILS_MAX_THREADS`: Threads per worker
+- `RAILS_LOG_LEVEL`: Logging level
+
+### Database Setup for Production
+
+```bash
+# Run migrations
+rails db:migrate RAILS_ENV=production
+
+# Create admin user (optional)
+rails runner "User.create!(email: 'admin@yourdomain.com', password: 'secure_password')" RAILS_ENV=production
+```
+
+## 📁 Project Structure
+
+```
+book_library/
+├── app/
+│   ├── controllers/     # Request handling and business logic
+│   ├── models/         # Data models and business rules
+│   ├── views/          # HTML templates and layouts
+│   └── assets/         # Stylesheets and JavaScript
+├── config/             # Application configuration
+├── db/                 # Database migrations and seeds
+├── spec/               # Test suite
+├── public/             # Static assets
+└── docker/             # Docker configuration
+```
+
+## 🔧 Configuration
+
+### Database Configuration
+
+Edit `config/database.yml` for your environment:
+
+```yaml
+development:
+  adapter: postgresql
+  database: book_library_development
+  username: your_username
+  password: your_password
+  host: localhost
+  port: 5432
+```
+
+### Application Settings
+
+Key configuration files:
+- `config/application.rb`: Main application settings
+- `config/routes.rb`: URL routing
+- `config/environments/`: Environment-specific settings
+
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Write tests for your changes
+4. Ensure all tests pass (`bundle exec rspec`)
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
 
-## License
+### Development Guidelines
 
-This project is licensed under the MIT License - see the LICENSE.md file for details.
+- Follow Rails conventions and best practices
+- Write comprehensive tests for new features
+- Use semantic commit messages
+- Update documentation for significant changes
+- Ensure code passes RuboCop linting
+
+## 📊 Performance & Monitoring
+
+### Database Optimization
+- Proper indexing on foreign keys and frequently queried columns
+- N+1 query prevention with `includes` statements
+- Database connection pooling configured
+
+### Caching Strategy
+- Fragment caching for book listings
+- HTTP caching headers for static assets
+- Session storage optimization
+
+### Security Features
+- CSRF protection enabled
+- SQL injection prevention via parameterized queries
+- XSS protection with content security policies
+- Secure password hashing with BCrypt
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**Database Connection Errors**
+```bash
+# Check PostgreSQL is running
+sudo service postgresql status
+
+# Reset database
+rails db:drop db:create db:migrate db:seed
+```
+
+**Asset Compilation Issues**
+```bash
+# Precompile assets
+rails assets:precompile
+
+# Clear asset cache
+rails tmp:clear
+```
+
+**Test Failures**
+```bash
+# Reset test database
+rails db:test:prepare
+
+# Run specific failing test
+bundle exec rspec spec/path/to/failing_spec.rb:line_number
+```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with Ruby on Rails framework
+- UI components styled with Tailwind CSS
+- Testing framework powered by RSpec
+- Deployment automation via Kamal
+- Sample data generated with Faker gem
+
+---
+
+For questions, issues, or contributions, please visit our [GitHub repository](https://github.com/yourusername/book_library) or contact the development team.
