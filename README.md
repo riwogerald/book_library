@@ -166,6 +166,68 @@ rails db:migrate RAILS_ENV=production
 rails runner "User.create!(email: 'admin@yourdomain.com', password: 'secure_password')" RAILS_ENV=production
 ```
 
+## 🔧 Database Setup Issues & Solutions
+
+### PostgreSQL Connection Issues
+
+If you encounter database connection errors:
+
+1. **Install PostgreSQL** (if not installed):
+   ```bash
+   # Windows (using Chocolatey)
+   choco install postgresql
+   
+   # macOS (using Homebrew)
+   brew install postgresql
+   
+   # Ubuntu/Debian
+   sudo apt-get install postgresql postgresql-contrib
+   ```
+
+2. **Start PostgreSQL Service**:
+   ```bash
+   # Windows
+   net start postgresql-x64-15
+   
+   # macOS
+   brew services start postgresql
+   
+   # Linux
+   sudo systemctl start postgresql
+   ```
+
+3. **Set Environment Variables** (recommended):
+   ```bash
+   # Create a .env file in your project root
+   echo "DATABASE_USERNAME=your_postgres_username" >> .env
+   echo "DATABASE_PASSWORD=your_postgres_password" >> .env
+   ```
+
+4. **Alternative: Use SQLite for Development**:
+   If PostgreSQL setup is problematic, you can temporarily use SQLite:
+   ```ruby
+   # In Gemfile, replace:
+   gem "pg", "~> 1.1"
+   # With:
+   gem "sqlite3", "~> 1.4" # For development only
+   ```
+
+### Database Creation Steps
+
+```bash
+# 1. Create the databases
+rails db:create
+
+# 2. Run migrations
+rails db:migrate
+
+# 3. Load seed data
+rails db:seed
+
+# 4. For test database
+RAILS_ENV=test rails db:migrate
+```
+
 ## 📁 Project Structure
 
 ```
