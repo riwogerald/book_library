@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   post "signup", to: "users#create"
 
   # User routes
-  resources :users, only: [:show, :new, :create]
+  resources :users, only: [:show]
 
   # Book routes
   resources :books do

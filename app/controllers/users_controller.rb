@@ -1,4 +1,8 @@
 class UsersController < ApplicationController
+  before_action :set_user, only: [:show]
+  before_action :require_login, only: [:show]
+  before_action :authorize_user, only: [:show]
+
   def new
     @user = User.new
   end
@@ -15,11 +19,21 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
     @borrowed_books = @user.currently_borrowed_books
   end
 
   private
+
+  def set_user
+    @user = User.find(params[:id])
+  end
+
+  def authorize_user
+    unless @user == current_user
+      flash[:error] = "You can only view your own profile"
+      redirect_to root_path
+    end
+  end
 
   def user_params
     params.require(:user).permit(:email, :password, :password_confirmation)

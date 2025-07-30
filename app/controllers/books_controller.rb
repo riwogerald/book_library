@@ -3,7 +3,7 @@ class BooksController < ApplicationController
   before_action :set_book, only: [ :show, :edit, :update, :destroy, :borrow, :return ]
 
   def index
-    @books = Book.all
+    @books = Book.includes(:borrowings).limit(50)
   end
 
   def show

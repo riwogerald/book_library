@@ -3,6 +3,8 @@ class Borrowing < ApplicationRecord
   belongs_to :book
 
   validates :due_date, presence: true
+  validates :user_id, uniqueness: { scope: :book_id, conditions: -> { where(returned_at: nil) },
+                                  message: "You have already borrowed this book" }
   validate :book_must_be_available, on: :create
 
   before_validation :set_due_date, on: :create

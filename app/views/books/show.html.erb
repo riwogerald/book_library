@@ -15,7 +15,7 @@
           <% end %>
         <% else %>
           <p class="text-red-600 font-semibold">Status: Borrowed</p>
-          <% if @book.current_borrowing.user == current_user %>
+          <% if logged_in? && @book.current_borrowing&.user == current_user %>
             <%= button_to 'Return Book', return_book_path(@book),
                 class: 'mt-4 bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600' %>
           <% end %>
