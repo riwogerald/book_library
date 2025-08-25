@@ -70,9 +70,22 @@ This portfolio demo simulates a complete book library management system with use
 ## 🚀 Getting Started
 
 ### Demo Credentials
-For quick testing, use these pre-configured accounts:
-- **Email**: john@example.com
-- **Password**: password123
+For quick testing, choose any of these professionally-themed accounts:
+
+**👩‍🏫 Professor of Literature**
+- **Email**: alexandra.reynolds@bookworm.edu
+- **Password**: LibraryScience2024!
+- **Profile**: Dr. Alexandra Reynolds specializes in contemporary literature
+
+**👨‍💼 Senior Librarian**
+- **Email**: marcus.chen@readingclub.org
+- **Password**: BookLover789#
+- **Profile**: Marcus Chen manages the digital cataloging system
+
+**👩‍🔬 Research Assistant**
+- **Email**: elena.vasquez@literaturehub.com
+- **Password**: PageTurner456*
+- **Profile**: Elena Vasquez focuses on literary research and analysis
 
 ### Local Development
 1. Clone or download the repository
@@ -184,12 +197,29 @@ This is a portfolio demonstration project. For suggestions or improvements:
 
 This project is created for portfolio demonstration purposes. Feel free to use as inspiration for your own projects.
 
+## 🎯 Technical Highlights
+
+### Authentication System
+- **Professional User Profiles**: Each demo account represents a different type of library user (Professor, Librarian, Researcher)
+- **Secure Password Requirements**: Complex passwords with special characters and numbers
+- **Role-Based Features**: Different user types demonstrate various library use cases
+
+### Data Management
+- **Realistic Test Data**: Professional email addresses and user profiles
+- **Complex Borrowing Scenarios**: Multiple users with different borrowing patterns
+- **State Persistence**: LocalStorage maintains demo state across sessions
+
+### User Experience
+- **Contextual Login**: Pre-filled professional credentials for easy testing
+- **Multiple User Personas**: Allows reviewers to explore different user experiences
+- **Professional Presentation**: All demo data reflects real-world library scenarios
+
 ## 📞 Contact
 
 For questions about this demo or to discuss development opportunities:
-- **Portfolio**: [Your Portfolio URL]
-- **LinkedIn**: [Your LinkedIn Profile]
-- **Email**: [Your Email Address]
+- **Portfolio**: [View Live Demo](https://book-library-appio.netlify.app/)
+- **LinkedIn**: [Connect with Developer]
+- **Email**: [Professional Contact]
 
 ---
 

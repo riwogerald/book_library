@@ -20,15 +20,27 @@ class BookLibrary {
         this.users = [
             {
                 id: 1,
-                email: 'john@example.com',
-                password: 'password123',
+                email: 'alexandra.reynolds@bookworm.edu',
+                password: 'LibraryScience2024!',
+                name: 'Dr. Alexandra Reynolds',
+                role: 'Professor of Literature',
                 createdAt: new Date('2024-01-15')
             },
             {
                 id: 2,
-                email: 'jane@example.com',
-                password: 'password123',
+                email: 'marcus.chen@readingclub.org',
+                password: 'BookLover789#',
+                name: 'Marcus Chen',
+                role: 'Senior Librarian',
                 createdAt: new Date('2024-02-01')
+            },
+            {
+                id: 3,
+                email: 'elena.vasquez@literaturehub.com',
+                password: 'PageTurner456*',
+                name: 'Elena Vasquez',
+                role: 'Research Assistant',
+                createdAt: new Date('2024-03-10')
             }
         ];
 
@@ -132,6 +144,14 @@ class BookLibrary {
                 bookId: 6,
                 dueDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days overdue
                 borrowedAt: new Date(Date.now() - 16 * 24 * 60 * 60 * 1000),
+                returnedAt: null
+            },
+            {
+                id: 3,
+                userId: 3,
+                bookId: 8,
+                dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 1 week from now
+                borrowedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
                 returnedAt: null
             }
         ];
@@ -325,7 +345,8 @@ class BookLibrary {
         if (this.currentUser) {
             authButtons.classList.add('hidden');
             userMenu.classList.remove('hidden');
-            userGreeting.textContent = `Hello, ${this.currentUser.email.split('@')[0]}!`;
+            const displayName = this.currentUser.name ? this.currentUser.name.split(' ')[0] : this.currentUser.email.split('@')[0];
+            userGreeting.textContent = `Hello, ${displayName}!`;
         } else {
             authButtons.classList.remove('hidden');
             userMenu.classList.add('hidden');
@@ -514,6 +535,8 @@ class BookLibrary {
         if (!this.currentUser) return;
 
         document.getElementById('user-email').textContent = this.currentUser.email;
+        document.getElementById('user-name').textContent = this.currentUser.name || 'Not specified';
+        document.getElementById('user-role').textContent = this.currentUser.role || 'Library Member';
         document.getElementById('member-since').textContent = this.currentUser.createdAt.toLocaleDateString();
 
         const userBorrowings = this.borrowings.filter(b => 
