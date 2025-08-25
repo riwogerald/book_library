@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Library Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .slide-up { animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .book-card { transition: all 0.3s ease; }
+        .book-card:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .status-available { background: linear-gradient(135deg, #10b981, #059669); }
+        .status-borrowed { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .btn-primary { background: linear-gradient(135deg, #3b82f6, #2563eb); transition: all 0.3s ease; }
+        .btn-primary:hover { background: linear-gradient(135deg, #2563eb, #1d4ed8); transform: translateY(-1px); }
+        .btn-success { background: linear-gradient(135deg, #10b981, #059669); }
+        .btn-success:hover { background: linear-gradient(135deg, #059669, #047857); }
+        .modal-backdrop { backdrop-filter: blur(4px); }
+        .overdue { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-gradient-to-r from-blue-600 to-blue-700 shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h1 class="text-white text-2xl font-bold cursor-pointer" onclick="showHome()">Book Library</h1>
+                </div>
+                
+                <div class="flex items-center space-x-6">
+                    <button onclick="showHome()" class="text-white hover:text-blue-200 transition-colors font-medium">Books</button>
+                    <div id="auth-buttons" class="flex items-center space-x-4">
+                        <button onclick="showLogin()" class="text-white hover:text-blue-200 transition-colors font-medium">Login</button>
+                        <button onclick="showSignup()" class="bg-white text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 transition-colors font-medium">Sign Up</button>
+                    </div>
+                    <div id="user-menu" class="hidden flex items-center space-x-4">
+                        <button onclick="showProfile()" class="text-white hover:text-blue-200 transition-colors font-medium">My Profile</button>
+                        <button onclick="logout()" class="text-white hover:text-blue-200 transition-colors font-medium">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <div id="flash-messages" class="container mx-auto px-4 py-4 hidden">
+        <div id="flash-content" class="px-4 py-3 rounded-lg relative slide-up"></div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Home/Books View -->
+        <div id="home-view" class="fade-in">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800">Available Books</h2>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" id="search-input" placeholder="Search books..." 
+                               class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <svg class="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                    <select id="category-filter" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="">All Categories</option>
+                        <option value="Fiction">Fiction</option>
+                        <option value="Fantasy">Fantasy</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Science Fiction">Science Fiction</option>
+                        <option value="Mystery">Mystery</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="books-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Books will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Login View -->
+        <div id="login-view" class="hidden max-w-md mx-auto">
+            <div class="bg-white rounded-xl shadow-lg p-8 slide-up">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Welcome Back</h2>
+                <form id="login-form" class="space-y-6">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Email</label>
+                        <input type="email" id="login-email" required 
+                               class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Password</label>
+                        <input type="password" id="login-password" required 
+                               class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <button type="submit" class="w-full btn-primary text-white font-semibold py-3 px-6 rounded-lg">
+                        Log In
+                    </button>
+                </form>
+                <div class="mt-6 text-center">
+                    <p class="text-gray-600">Don't have an account? 
+                        <button onclick="showSignup()" class="text-blue-600 hover:text-blue-700 font-semibold">Sign up</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Signup View -->
+        <div id="signup-view" class="hidden max-w-md mx-auto">
+            <div class="bg-white rounded-xl shadow-lg p-8 slide-up">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Create Account</h2>
+                <form id="signup-form" class="space-y-6">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Email</label>
+                        <input type="email" id="signup-email" required 
+                               class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Password</label>
+                        <input type="password" id="signup-password" required minlength="6"
+                               class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Confirm Password</label>
+                        <input type="password" id="signup-password-confirm" required 
+                               class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <button type="submit" class="w-full btn-primary text-white font-semibold py-3 px-6 rounded-lg">
+                        Sign Up
+                    </button>
+                </form>
+                <div class="mt-6 text-center">
+                    <p class="text-gray-600">Already have an account? 
+                        <button onclick="showLogin()" class="text-blue-600 hover:text-blue-700 font-semibold">Log in</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile View -->
+        <div id="profile-view" class="hidden">
+            <div class="bg-white rounded-xl shadow-lg p-8 slide-up">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8">My Profile</h2>
+                
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Account Information</h3>
+                    <p class="text-gray-600"><strong>Email:</strong> <span id="user-email"></span></p>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Currently Borrowed Books</h3>
+                    <div id="borrowed-books" class="space-y-4">
+                        <!-- Borrowed books will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <button onclick="showHome()" class="btn-primary text-white px-6 py-3 rounded-lg font-semibold">
+                    Browse Available Books
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Book Detail Modal -->
+    <div id="book-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 modal-backdrop flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl shadow-2xl p-8 max-w-2xl w-full mx-4 slide-up">
+            <div class="flex justify-between items-start mb-6">
+                <h2 id="modal-title" class="text-3xl font-bold text-gray-800"></h2>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            </div>
+            
+            <div class="space-y-4 mb-8">
+                <p class="text-xl text-gray-600">by <span id="modal-author" class="font-semibold"></span></p>
+                <p class="text-gray-500">ISBN: <span id="modal-isbn"></span></p>
+                <p id="modal-description" class="text-gray-700 leading-relaxed"></p>
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm font-medium text-gray-600">Category:</span>
+                    <span id="modal-category" class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium"></span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm font-medium text-gray-600">Status:</span>
+                    <span id="modal-status" class="px-3 py-1 rounded-full text-sm font-semibold text-white"></span>
+                </div>
+            </div>
+            
+            <div id="modal-actions" class="flex space-x-4">
+                <!-- Action buttons will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 mt-16">
+        <div class="container mx-auto px-4 py-8 text-center text-gray-600">
+            <p>&copy; 2024 Book Library Management System. Built with modern web technologies.</p>
+            <p class="mt-2 text-sm">Demo application showcasing full-stack development skills</p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
